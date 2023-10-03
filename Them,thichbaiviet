@@ -1,0 +1,47 @@
+<?php
+// Thêm bài viết
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $tieu_de = $_POST["tieu_de"];
+    $noi_dung = $_POST["noi_dung"];
+    
+    $sql = "INSERT INTO bai_viet (tieu_de, noi_dung, luot_thich) VALUES ('$tieu_de', '$noi_dung', 0)";
+    
+    if ($conn->query($sql) === TRUE) {
+        echo "Bài viết đã được thêm thành công.";
+    } else {
+        echo "Lỗi: " . $sql . "<br>" . $conn->error;
+    }
+}
+
+// Thích bài viết
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    $bai_viet_id = $_GET["bai_viet_id"];
+    
+    $sql = "UPDATE bai_viet SET luot_thich = luot_thich + 1 WHERE id = $bai_viet_id";
+    
+    if ($conn->query($sql) === TRUE) {
+        echo "Bài viết đã được thích.";
+    } else {
+        echo "Lỗi: " . $sql . "<br>" . $conn->error;
+    }
+}
+
+$conn->close();
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Thêm Bài viết</title>
+</head>
+<body>
+
+<h2>Thêm Bài viết</h2>
+
+<form action="ten_file_php.php" method="post">
+    Tiêu đề: <input type="text" name="tieu_de"><br>
+    Nội dung: <textarea name="noi_dung"></textarea><br>
+    <input type="submit" value="Thêm">
+</form>
+</body>
+</html>
+<a href="ten_file_php.php?bai_viet_id=<?php echo $id; ?>">Thích</a>
